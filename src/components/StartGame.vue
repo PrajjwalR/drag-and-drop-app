@@ -1,10 +1,22 @@
 <template>
   <div class="container">
     <div class="overlay">
-      <h1>Drag and Drop</h1>
-      <draggable v-model="boxes" tag="ul">
+      <h1 @click="randomise">Drag and Drop Shuffler</h1>
+
+      <draggable
+        v-model="boxes"
+        group="boxes"
+        :style="{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }"
+        tag="ul"
+      >
         <template #item="{ element: box }">
-          <li class="draggable-box">{{ box }}</li>
+          <li class="draggable-box" :style="{ width: `${box * 200}px` }">
+            {{ `box-${box}` }}
+          </li>
         </template>
       </draggable>
     </div>
@@ -15,7 +27,26 @@
 import { ref } from "vue";
 import draggable from "vuedraggable";
 
-const boxes = ref(["Box-1", "Box-2", "Box-3", "Box-4", "Box-5"]);
+// const TOTAL_NUMBER_OF_BOXES = 5;
+const boxes = ref(randomArray(5));
+
+function randomArray(len) {
+  const arr = [];
+  while (arr.length < len) {
+    let number = Math.random().toFixed(1) * 10;
+    number = number % len;
+    number = number + 1;
+    if (!arr.includes(number)) {
+      arr.push(number);
+    }
+  }
+
+  return arr;
+}
+
+const randomise = () => {
+  boxes.value = randomArray(5);
+};
 </script>
 
 <style scoped>
@@ -47,7 +78,7 @@ h1 {
   color: rgb(255, 72, 0);
   background-color: aliceblue;
   border-radius: 10px;
-  height: 50px;
+  height: 100px;
   width: 300px;
   display: flex;
   justify-content: center;
@@ -56,7 +87,7 @@ h1 {
 .draggable-box {
   list-style-type: none;
   height: 100px;
-  width: 200px;
+
   background-color: rgb(255, 81, 0);
   display: flex;
   justify-content: center;

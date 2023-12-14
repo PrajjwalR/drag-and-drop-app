@@ -18,7 +18,7 @@
   color: #2c3e50;
 }
 .container {
-  height: 90vh;
+  height: 84vh;
 }
 .wrapper {
   width: 98vw;
